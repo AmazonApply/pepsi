@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Contratación - Bono de Bienvenida</title>
+    <style>
+        :root {
+            --pepsi-blue: #004B87;
+            --pepsi-red: #C8102E;
+            --pepsi-white: #FFFFFF;
+            --dark-bg: #0d2c47;
+            --gold-accent: #FFD700;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle, var(--pepsi-blue) 0%, var(--dark-bg) 100%);
+            color: var(--pepsi-white);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header {
+            margin-top: 20px;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        .logo-text {
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+        }
+        .logo-text span { color: var(--pepsi-red); }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            line-height: 1.3;
+        }
+
+        .sub-headline {
+            font-size: 1rem;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+
+        /* Contenedor de Gamificación */
+        .game-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px 20px;
+            max-width: 450px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+        }
+
+        .instruction {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--gold-accent);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .bonus-title {
+            font-size: 1.6rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .timer-box {
+            font-size: 1.1rem;
+            font-weight: bold;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 25px;
+            border: 1px solid var(--pepsi-red);
+        }
+
+        #seconds {
+            color: var(--pepsi-red);
+            font-size: 1.3rem;
+        }
+
+        /* Animación y diseño del cofre */
+        .chest-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .chest-wrapper:active {
+            transform: scale(0.95);
+        }
+
+        .chest-img {
+            width: 180px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            /* Reemplazar con tu recurso si es necesario, uso un emoji grande o un placeholder visual estable */
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
+        }
+
+        .cursor-pointer {
+            position: absolute;
+            bottom: -10px;
+            right: 20px;
+            width: 40px;
+            animation: bounce 1s infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+
+        /* Modal de Acción CPA */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            color: #333333;
+            padding: 30px 20px;
+            border-radius: 15px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-success-icon {
+            font-size: 3rem;
+            color: #2ecc71;
+            margin-bottom: 10px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--pepsi-blue);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .modal-text {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            color: #555555;
+        }
+
+        .modal-text strong {
+            color: var(--pepsi-red);
+        }
+
+        .cta-button {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 8px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .footer-text {
+            margin-top: auto;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.4);
+            max-width: 500px;
+            padding: 20px 0;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo-text">PEPSI<span>.</span></div>
+        <h1>¡Únete al Equipo y Desbloquea tu Bono de Bienvenida!</h1>
+        <p class="sub-headline">Puestos disponibles en tu área. Completa este rápido filtro de acceso para asegurar tu incentivo de contratación.</p>
+    </div>
+
+    <div class="game-container">
+        <div class="instruction">Presiona para ganar</div>
+        <div class="bonus-title">TU BONO EXTRA</div>
+        
+        <div class="timer-box">
+            TIENES <span id="seconds">10</span> SEGUNDOS
+        </div>
+
+        <br>
+
+        <div class="chest-wrapper" id="chestTrigger">
+            <svg class="chest-img" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 40 V80 H90 V40 Z" fill="#8B5A2B"/>
+                <path d="M10 40 Q50 15 90 40 Z" fill="#A0522D"/>
+                <rect x="42" y="35" width="16" height="16" rx="3" fill="#FFD700"/>
+                <circle cx="50" cy="43" r="3" fill="#333"/>
+                <path d="M20 40 H80" stroke="#5c3a1d" stroke-width="2"/>
+            </svg>
+            <svg class="cursor-pointer" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="1">
+                <path d="M9 22V13.5M9 13.5V9.5C9 8.67157 9.67157 8 10.5 8C11.3284 8 12 8.67157 12 9.5V12M12 12V10.5C12 9.67157 12.6716 9 13.5 9C14.3284 9 15 9.67157 15 10.5V12M15 12V11.5C15 10.6716 15.6716 10 16.5 10C17.3284 10 18 10.6716 18 11.5V16C18 19.3137 15.3137 22 12 22H9Z" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 13.5V4.5C9 3.67157 7.75 3 6.5 3C5.25 3 4.5 3.67157 4.5 4.5V15" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="footer-text">
+        Este es un portal de precalificación independiente para campañas de reclutamiento de personal y asignación de incentivos corporativos. Marcas comerciales e identidad gráfica pertenecen a sus respectivos titulares.
+    </div>
+
+    <div class="modal-overlay" id="cpaModal">
+        <div class="modal-content">
+            <div class="modal-success-icon">✓</div>
+            <div class="modal-title">¡BONO ASIGNADO!</div>
+            <p class="modal-text">Hemos reservado un beneficio de <strong>$250 USD</strong> asociados a tu perfil de solicitante.</p>
+            <p class="modal-text" style="font-size: 0.9rem; color: #666;">Para liberarlo y pasar directamente a la entrevista formal, completa la verificación de seguridad gratuita obligatoria en el siguiente botón:</p>
+            
+            <a href="TU_LINK_DE_OFERTA_CPA_AQUI" class="cta-button" id="cpaLink">VERIFICAR Y COBRAR</a>
+        </div>
+    </div>
+
+    <script>
+        // Lógica del contador regresivo
+        let timeLeft = 10;
+        const timerElement = document.getElementById('seconds');
+        
+        const countdown = setInterval(() => {
+            timeLeft--;
+            timerElement.textContent = timeLeft;
+            if (timeLeft <= 0) {
+                // Reinicia el contador para mantener el bucle psicológico de urgencia activa
+                timeLeft = 10; 
+            }
+        }, 1000);
+
+        // Acción al presionar el cofre
+        const chest = document.getElementById('chestTrigger');
+        const modal = document.getElementById('cpaModal');
+
+        chest.addEventListener('click', () => {
+            clearInterval(countdown); // Detiene el reloj al interactuar
+            modal.classList.add('active'); // Muestra la oferta CPA
+        });
+    </script>
+</body>
+</html>
